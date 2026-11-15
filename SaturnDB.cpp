@@ -7,6 +7,16 @@
 #include <vector>
 #include <cstddef>
 #include <cstdint>
+#include <sys/socket.h>   // socket, bind, listen, accept, connect, send, recv
+#include <netinet/in.h>   // sockaddr_in, htons, INADDR_*
+#include <arpa/inet.h>    // inet_pton, inet_ntop
+#include <netdb.h>        // getaddrinfo
+#include <sys/un.h>       // sockaddr_un (Unix domain)
+#include <unistd.h>       // close, read, write
+#include <fcntl.h>        // fcntl (non-blocking)
+#include <poll.h>         // poll
+#include <cerrno>
+#include <cstring>
 
 
 using std::cin; using std::cout; using std::string; using std::remove;using std::vector;
