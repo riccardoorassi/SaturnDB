@@ -1,5 +1,5 @@
 #include <iostream>
-#include <optional>
+#include <optional> //handling memory errors
 #include <string>
 #include <algorithm>
 #include <cctype>
