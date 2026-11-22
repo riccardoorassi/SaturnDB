@@ -34,16 +34,25 @@ void printBanner() {
 )ART" << "\n";
 }
 
-int socket = socket(AF_INET, SOCK_STREAM,0);
-struct sockaddr_in addr;
-memset(&addr, 0, sizeof(addr));
+int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+if (listen_fd < 0) { perror("socket"); return 1; }
+
+int yes = 1;
+setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
+sockaddr_in addr{};                     
 addr.sin_family = AF_INET;
 addr.sin_port = htons(2851);
-addr.sin_addr.s_addr = htonl(INADDR_ANY);
+addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-bind(listen_fd, (struct sockaddr *)&addr, sizeof(addr));
-listen(socket, 128);
-
+if (bind(listen_fd, (sockaddr *)&addr, sizeof(addr)) < 0) {
+    perror("bind");
+    return 1;
+}
+if (listen(listen_fd, 128) < 0) {
+    perror("listen");
+    return 1;
+}
 string delSpaces(string s) {
     s.erase(remove(s.begin(), s.end(), ' '), s.end());
     return s;
