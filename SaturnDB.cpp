@@ -21,6 +21,7 @@
 
 using std::cin; using std::cout; using std::string; using std::remove;using std::vector;
 
+
 // Linked list of key -> value string pairs.
 // Each key appears at most once: setting an existing key updates its value.
 void printBanner() {
@@ -33,12 +34,23 @@ void printBanner() {
 )ART" << "\n";
 }
 
+int socket = socket(AF_INET, SOCK_STREAM,0);
+struct sockaddr_in addr;
+memset(&addr, 0, sizeof(addr));
+addr.sin_family = AF_INET;
+addr.sin_port = htons(2851);
+addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
+bind(listen_fd, (struct sockaddr *)&addr, sizeof(addr));
+listen(socket, 128);
 
 string delSpaces(string s) {
     s.erase(remove(s.begin(), s.end(), ' '), s.end());
     return s;
 }
+
+
+short maximum_clients = 1000;
 class KVList {
 private:
     struct Node {
@@ -314,7 +326,7 @@ int main(){
         if (args.empty()) continue;
         std::transform(args[0].begin(), args[0].end(),args[0].begin(),[](unsigned char c) {return std::toupper(c);});       
         if(args[0] == "EXIT") break;
-        cout << execute(store, args) << '\n';
+        cout << execute(store, args) << '\n'; // Executes command and prints result
 
                 
         }
